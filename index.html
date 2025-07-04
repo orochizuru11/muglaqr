@@ -10,15 +10,17 @@
     }
 
     function openApp() {
-      const id = getQueryParam("id") || "00000";  // id parametresi yoksa varsayılan
-      const appLink = 'kkmugla://?type=stop&id=' + id;
-      const fallback = 'https://play.google.com/store/apps/details?id=kentkart.mobile.muglakentkart';
+      const id = getQueryParam("id") || "00000"; // Varsayılan id
+      const intentUrl =
+        "intent://?type=stop&id=" + id +
+        "#Intent;" +
+        "scheme=kkmugla;" +
+        "package=kentkart.mobile.muglakentkart;" +
+        "S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dkentkart.mobile.muglakentkart;" +
+        "end;";
 
-      setTimeout(function () {
-        window.location.href = fallback;
-      }, 1500);
-
-      window.location.href = appLink;
+      // Doğrudan intent linkine yönlendir
+      window.location.href = intentUrl;
     }
 
     window.onload = openApp;
