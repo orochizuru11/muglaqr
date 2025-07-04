@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>MuğlaApp Yönlendirme</title>
+  <meta charset="utf-8" />
+  <script>
+    function openApp() {
+      const appLink = 'kkmugla://?type=stop&id=70052';
+      const fallback = 'https://play.google.com/store/apps/details?id=kentkart.mobile.muglakentkart';
+
+      setTimeout(function () {
+        window.location.href = fallback;
+      }, 1500);
+
+      window.location.href = appLink;
+    }
+
+    window.onload = openApp;
+  </script>
+</head>
+<body>
+  <p>MuğlaApp açılıyor, lütfen bekleyin...</p>
+</body>
+</html>
