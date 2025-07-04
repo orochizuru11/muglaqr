@@ -21,34 +21,30 @@
       const id = getQueryParam("id") || "00000";
 
       if (isAndroid()) {
-        const appUrl = "kkmugla://?type=stop&id=" + id;
-        const fallbackUrl = "https://play.google.com/store/apps/details?id=kentkart.mobile.muglakentkart";
+        const intentUrl =
+          "intent://?type=stop&id=" + id +
+          "#Intent;" +
+          "scheme=kkmugla;" +
+          "package=kentkart.mobile.muglakentkart;" +
+          "S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dkentkart.mobile.muglakentkart;" +
+          "end;";
 
-        // Android'de iframe ile uygulamayı açmayı dene
-        const iframe = document.createElement("iframe");
-        iframe.style.display = "none";
-        iframe.src = appUrl;
-        document.body.appendChild(iframe);
-
-        // 2 saniye sonra Play Store'a yönlendir (fallback)
-        setTimeout(() => {
-          window.location.href = fallbackUrl;
-        }, 2000);
+        // Android Chrome gibi destekleyen tarayıcılarda çalışır
+        window.location.href = intentUrl;
 
       } else if (isIOS()) {
         const appUrl = "kkmugla://?type=stop&id=" + id;
         const appStoreUrl = "https://apps.apple.com/tr/app/mu%C4%9Flaapp/id1220772502?l=tr";
 
-        // iOS'ta doğrudan uygulamayı açmayı dene
+        // Uygulamayı açmaya çalış
         window.location.href = appUrl;
 
-        // 2 saniye sonra App Store'a yönlendir (fallback)
+        // Fallback olarak App Store'a yönlendir
         setTimeout(() => {
           window.location.href = appStoreUrl;
         }, 2000);
-
       } else {
-        // Diğer platformlar için varsayılan Play Store web linki
+        // Diğer platformlarda Play Store'a yönlendir
         window.location.href = "https://play.google.com/store/apps/details?id=kentkart.mobile.muglakentkart";
       }
     }
