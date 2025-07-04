@@ -19,33 +19,30 @@
 
     function openApp() {
       const id = getQueryParam("id") || "00000";
+      const iosUrl = "kkmugla://?type=stop&id=" + id;
+      const iosStore = "https://apps.apple.com/tr/app/mu%C4%9Flaapp/id1220772502?l=tr";
+      const androidIntent =
+        "intent://?type=stop&id=" + id +
+        "#Intent;scheme=kkmugla;" +
+        "package=kentkart.mobile.muglakentkart;" +
+        "S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dkentkart.mobile.muglakentkart;" +
+        "end;";
+      const androidStore = "https://play.google.com/store/apps/details?id=kentkart.mobile.muglakentkart";
 
       if (isAndroid()) {
-        const intentUrl =
-          "intent://?type=stop&id=" + id +
-          "#Intent;" +
-          "scheme=kkmugla;" +
-          "package=kentkart.mobile.muglakentkart;" +
-          "S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dkentkart.mobile.muglakentkart;" +
-          "end;";
-
-        // Android Chrome gibi destekleyen tarayıcılarda çalışır
-        window.location.href = intentUrl;
-
+        window.location.href = androidIntent;
       } else if (isIOS()) {
-        const appUrl = "kkmugla://?type=stop&id=" + id;
-        const appStoreUrl = "https://apps.apple.com/tr/app/mu%C4%9Flaapp/id1220772502?l=tr";
+        // iframe yerine direkt yönlendir:
+        window.location.href = iosUrl;
 
-        // Uygulamayı açmaya çalış
-        window.location.href = appUrl;
-
-        // Fallback olarak App Store'a yönlendir
-        setTimeout(() => {
-          window.location.href = appStoreUrl;
-        }, 2000);
+        // fallback:
+        setTimeout(function () {
+          if (!document.hidden) { 
+            window.location.href = iosStore;
+          }
+        }, 2500);
       } else {
-        // Diğer platformlarda Play Store'a yönlendir
-        window.location.href = "https://play.google.com/store/apps/details?id=kentkart.mobile.muglakentkart";
+        window.location.href = androidStore;
       }
     }
 
