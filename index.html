@@ -1,26 +1,52 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>MuğlaApp Yönlendirme</title>
   <meta charset="utf-8" />
+  <title>MuğlaApp Yönlendirme</title>
   <script>
     function getQueryParam(param) {
       const urlParams = new URLSearchParams(window.location.search);
       return urlParams.get(param);
     }
 
-    function openApp() {
-      const id = getQueryParam("id") || "00000"; // Varsayılan id
-      const intentUrl =
-        "intent://?type=stop&id=" + id +
-        "#Intent;" +
-        "scheme=kkmugla;" +
-        "package=kentkart.mobile.muglakentkart;" +
-        "S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dkentkart.mobile.muglakentkart;" +
-        "end;";
+    function isAndroid() {
+      return /Android/i.test(navigator.userAgent);
+    }
 
-      // Doğrudan intent linkine yönlendir
-      window.location.href = intentUrl;
+    function isIOS() {
+      return /iPhone|iPad|iPod/i.test(navigator.userAgent);
+    }
+
+    function openApp() {
+      const id = getQueryParam("id") || "00000";
+
+      if (isAndroid()) {
+        const intentUrl =
+          "intent://?type=stop&id=" + id +
+          "#Intent;" +
+          "scheme=kkmugla;" +
+          "package=kentkart.mobile.muglakentkart;" +
+          "S.browser_fallback_url=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dkentkart.mobile.muglakentkart;" +
+          "end;";
+        window.location.href = intentUrl;
+
+        setTimeout(() => {
+          window.location.href = "https://play.google.com/store/apps/details?id=kentkart.mobile.muglakentkart";
+        }, 3000);
+
+      } else if (isIOS()) {
+        const appUrl = "kkmugla://?type=stop&id=" + id;
+        const appStoreUrl = "https://apps.apple.com/tr/app/mu%C4%9Flaapp/id1220772502?l=tr";
+
+        window.location.href = appUrl;
+
+        setTimeout(() => {
+          window.location.href = appStoreUrl;
+        }, 3000);
+
+      } else {
+        window.location.href = "https://play.google.com/store/apps/details?id=kentkart.mobile.muglakentkart";
+      }
     }
 
     window.onload = openApp;
